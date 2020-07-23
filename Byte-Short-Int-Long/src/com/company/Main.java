@@ -25,5 +25,15 @@ public class Main {
         long MinumumValueOfLong = Long.MIN_VALUE;
         System.out.println("Minimum Value of a Long = "+ MinumumValueOfLong);
         System.out.println("Maximum Value of a Long = "+ MaximumValueOfLong);
+
+        int IntNumber = (MininumValueOfInt / 2);
+        // tova se naricha casting realno java pravi promenliva byte, no vijda MinimumValueOfByte
+        // kato int, osven ako ne e cast-nato kato byte stoinost
+        // ako "(byte)" se premahne Casting-a pada i shte dade greshka
+        byte ByteNumber = (byte)(MinumumValueOfByte / 2);
+        System.out.println("Value of Int Min /2 = "+ IntNumber);
+        System.out.println("Value of Byte Min /2 = "+ ByteNumber);
+        short ShortNumber = (short)(MinumumValueOfShort / 2);
+        System.out.println("Value of Short /2 = "+ ShortNumber);
     }
 }
