@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9303d808-b0d5-4405-9823-736807a7ff87" name="Default Changelist" comment="" />
+    <list default="true" id="9303d808-b0d5-4405-9823-736807a7ff87" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Primitive-Types-Challenge/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Primitive-Types-Challenge/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Project-Euler-Even-Fibonacci-Numbers/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Project-Euler-Even-Fibonacci-Numbers/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Project-Euler-Multiples-of-3-And-5/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Project-Euler-Multiples-of-3-And-5/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scanner-Test/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Scanner-Test/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Strings/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Strings/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Switch-Self-Teaching/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Switch-Self-Teaching/src/com/company/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +27,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Operators" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -44,10 +53,18 @@
       <updated>1595578480670</updated>
       <workItem from="1595578482779" duration="5000" />
       <workItem from="1595578606076" duration="84000" />
+      <workItem from="1596466351818" duration="18000" />
     </task>
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1596466368266">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1596466368266" />
     <state x="209" y="33" key="new project wizard" timestamp="1595578689894">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

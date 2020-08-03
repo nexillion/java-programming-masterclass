@@ -12,5 +12,6 @@ public class Main {
         System.out.println("shortvariable = "+ shortvariable);
         System.out.println("intvariable = "+ intvariable);
         System.out.println("longvarable = "+ longvariable);
+        //----
     }
 }

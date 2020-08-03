@@ -18,6 +18,6 @@ public class Main {
         stringthree = stringthree + anumber;
         System.out.println(stringthree);
         //pri output na String + integer, se poluchava vsqkash sum naprawil String+String
-        //tova e hubavo da se zapomni kato interaction
+        //tova e hubavo da se zapomni kato interaction.
     }
 }

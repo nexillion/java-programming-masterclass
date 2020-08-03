@@ -13,6 +13,6 @@ public class Main {
         boolean canYouDivideTenThousandByFourty = variableThree == 0 ? true:false;
         System.out.println("Boolean variable = "+canYouDivideTenThousandByFourty);
         if(!canYouDivideTenThousandByFourty)
-            System.out.println("Got some remainder.");
+            System.out.println("Got some remainder");
     }
 }

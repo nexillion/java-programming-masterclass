@@ -1,6 +1,6 @@
 package com.company;
 import java.util.Scanner;
-//tova e import komanda za scanner, koito pozvolqva da se chete user input
+//tova e import komanda za scanner, koito pozvolqva da se chete user input.
 public class Main
 {
     public static void main(String[] args)

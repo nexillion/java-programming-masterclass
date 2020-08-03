@@ -79,7 +79,7 @@ public class Main {
     }
         System.out.println("-----------------------------------------------------------------");
         //tova e primer za funkciqta || (OR) - toest trqbwa 1 ili i dvata check-a da sa true za da vurne true
-        //v sluchaq sum izpolzval check koito vinagi shte vrushta TRUE
+        //v sluchaq sum izpolzval check koito vinagi shte vrushta TRUE.
         //tova se poluchava zashtoto bukvalno vsqko chislo e ili po-malko ot 1000 ili po-golqmo ot 100
         if(changeThisValueToTestIfElse > valueOfMyBottomNumber || changeThisValueToTestIfElse < valueOfMyTopNumber)
         {
