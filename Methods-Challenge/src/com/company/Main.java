@@ -19,11 +19,11 @@ public class Main
         {
             number = 1;
         }
-        else if (highScore < 1000 && highScore > 500)
+        else if (highScore < 1000 && highScore >= 500)
         {
             number = 2;
         }
-        else if (highScore < 500 && highScore > 100)
+        else if (highScore < 500 && highScore >= 100)
         {
                 number = 3;
         }
