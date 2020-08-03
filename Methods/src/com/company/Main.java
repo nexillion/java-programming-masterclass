@@ -4,7 +4,7 @@ import static com.company.myClassTwo.myMethodClassTwo;
 import java.util.Scanner;
 
 
-//-------------------------------------------------------------------------
+//--------------------------------------------------------------------------
 public class Main
 {
     public static void main(String[] args)
@@ -17,9 +17,9 @@ public class Main
         {
             myMethodClassOne();
         }else
-            {
-                myMethodClassTwo();
-            }
+        {
+            myMethodClassTwo();
+        }
         System.out.println("The End");
     }
 }
@@ -40,10 +40,10 @@ class myClassOne
                 drinksDrank++;
                 System.out.println("You have drank "+drinksDrank+" drinks by now.");
             }else
-                {
+            {
                 System.out.println("You leave.");
                 break;
-                }
+            }
             if(drinksDrank==7)
             {
                 System.out.println("You blacked out from too much drink.");
