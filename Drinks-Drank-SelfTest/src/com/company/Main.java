@@ -1,6 +1,5 @@
 package com.company;
-import static com.company.myClassOne.myMethodClassOne;
-import static com.company.myClassTwo.myMethodClassTwo;
+
 import java.util.Scanner;
 
 
@@ -12,17 +11,29 @@ public class Main
         Scanner userChoiceBoolean = new Scanner(System.in);
         System.out.println("What is your age?");
         int userAge = userChoiceBoolean.nextInt();
-        boolean userAge18Plus = (userAge>=18)?true:false;
+        boolean userAge18Plus = false;
+        // boolean userAge18Plus = (userAge >= 18) ? true : false;
+        // String userAge18PlusString = userAge >= 18 ? "Yes" : "No";
+
+        if(userAge >= 18)
+        {
+            userAge18Plus = true;
+        }
+        else
+        {
+            userAge18Plus = false;
+        }
+
         if (userAge>90)
         {
             System.out.println("So you are born in "+(2020-userAge)+"? ... Okay.");
         }
         if (userAge18Plus)
         {
-            myMethodClassOne();
+            myClassOne.myMethodClassOne();
         }else
         {
-            myMethodClassTwo();
+            myClassTwo.myMethodClassTwo();
         }
         System.out.printf("\n\n >>The End<<");
     }

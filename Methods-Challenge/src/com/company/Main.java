@@ -6,6 +6,7 @@ public class Main
         String playerName = "Nikolay";
         int highScore = 1500;
         int returnedNumber = calculateHighScore(highScore);
+        System.out.printf("Number retuned form calculate highScore = " + returnedNumber);
         displayHighScorePosition(playerName,returnedNumber);
     }
     public static void displayHighScorePosition(String playerName,int playerPosition)
@@ -19,11 +20,11 @@ public class Main
         {
             number = 1;
         }
-        else if (highScore < 1000 && highScore >= 500)
+        else if (&& highScore >= 500)
         {
             number = 2;
         }
-        else if (highScore < 500 && highScore >= 100)
+        else if (highScore >= 100)
         {
                 number = 3;
         }
