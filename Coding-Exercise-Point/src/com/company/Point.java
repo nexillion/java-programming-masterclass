@@ -48,6 +48,6 @@ public class Point
 
     public double distance(Point second)
     {
-        return Math.sqrt((this.x - 3) * (this.x - 3) + (this.y - 1) * (this.y - 1));
+        return Math.sqrt((this.x - second.x) * (this.x - second.x) + (this.y - second.y) * (this.y - second.y));
     }
 }
