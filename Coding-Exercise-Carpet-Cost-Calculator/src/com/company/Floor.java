@@ -5,7 +5,7 @@ public class Floor
     private double width;
     private double length;
 
-    Floor(double width, double length)
+    public Floor(double width, double length)
     {
         if(width < 0)
         {
