@@ -1,6 +1,8 @@
 package toDoList;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,14 +12,13 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
-import java.util.List;
 
 public class ToDoData
 {
     private static ToDoData instance = new ToDoData();
     private static String filename = "ToDoListNames.txt";
 
-    private List<ToDoItem> toDoItemsList;
+    private ObservableList<ToDoItem> toDoItemsObservableList;
     private DateTimeFormatter formatter;
 
     private ToDoData() // makes it so that you cannot call a new instance of this class
@@ -27,7 +28,7 @@ public class ToDoData
 
     public void loadToDoItems() throws IOException
     {
-        toDoItemsList = FXCollections.observableArrayList();
+        toDoItemsObservableList = FXCollections.observableArrayList();
         Path path = Paths.get(filename);
         BufferedReader bufferedReader = Files.newBufferedReader(path);
 
@@ -46,7 +47,7 @@ public class ToDoData
                 LocalDate date = LocalDate.parse(dateString, formatter); // formats date
 
                 ToDoItem toDoItem = new ToDoItem(shortDescription, details, date); // make instance
-                toDoItemsList.add(toDoItem); // pass to List
+                toDoItemsObservableList.add(toDoItem); // pass to List
             }
         }
         finally
@@ -65,7 +66,7 @@ public class ToDoData
 
         try
         {
-            Iterator<ToDoItem> iterator = toDoItemsList.iterator();
+            Iterator<ToDoItem> iterator = toDoItemsObservableList.iterator();
 
             while (iterator.hasNext())
             {
@@ -94,18 +95,18 @@ public class ToDoData
         return instance;
     }
 
-    public List<ToDoItem> getToDoItemsList()
+    public ObservableList<ToDoItem> getToDoItemsObservableList()
     {
-        return toDoItemsList;
+        return toDoItemsObservableList;
     }
 
     public void addToDoItemsList(ToDoItem item)
     {
-        toDoItemsList.add(item);
+        toDoItemsObservableList.add(item);
     }
 
-    public void setToDoItemsList(List<ToDoItem> toDoItemsList)
+    public void setToDoItemsObservableList(ObservableList<ToDoItem> toDoItemsObservableList)
     {
-        this.toDoItemsList = toDoItemsList;
+        this.toDoItemsObservableList = toDoItemsObservableList;
     }
 }

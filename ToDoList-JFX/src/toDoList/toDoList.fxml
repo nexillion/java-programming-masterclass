@@ -29,7 +29,7 @@
     </left>
     <center>
         <VBox style="-fx-background-color: white">
-            <TextArea fx:id="itemDetailsTextArea" VBox.vgrow="ALWAYS" editable="true"/>
+            <TextArea fx:id="itemDetailsTextArea" VBox.vgrow="ALWAYS" editable="true" wrapText="true"/>
             <HBox alignment="CENTER">
                 <Label text="Due: ">
                     <font>

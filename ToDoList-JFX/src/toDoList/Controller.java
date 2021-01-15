@@ -74,7 +74,9 @@ public class Controller
         // and the commented code a few lines down
         // it also fixes the error that was popping up when clicking on blank spaces with >> if(newValue != null) <<
 
-        toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItemsList()); // toDoListView.getItems().setAll(toDoItems);
+        // toDoListView.getItems().setAll(toDoItems);
+        // toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItemsObservableList());
+        toDoListView.setItems(ToDoData.getInstance().getToDoItemsObservableList()); // replaces previous line
         toDoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
@@ -107,7 +109,7 @@ public class Controller
         {
             DialogController dialogController = fxmlLoader.getController();
             dialogController.processResults();
-            toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItemsList());
+            // toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItemsObservableList()); // handled by observableList
             System.out.println("OK pressed");
         }
         else
