@@ -1,8 +1,6 @@
 package com.company;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-
+import java.util.List;
 
 public class Main
 {
@@ -14,8 +12,17 @@ public class Main
                 System.out.println("Can't open datasource");
                 return;
             }
+
+        List<Artists> artists = datasource.queryArtists();
+            if(artists == null)
+            {
+                System.out.println("No artists queried.");
+            }
+
+            for(Artists artist : artists)
+            {
+                System.out.println("_ID = " + artist.getId() + ", Artist Name = " + artist.getName());
+            }
             datasource.close();
     }
-
-
 }

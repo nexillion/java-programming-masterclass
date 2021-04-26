@@ -2,13 +2,12 @@ package com.company;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataSource
 {
-
     public final static String DB_NAME = FileSystems.getDefault().getSeparator() + "music.db";
     public static final String CONNECTION_PATH = "jdbc:sqlite:" + getPath();
 
@@ -28,11 +27,16 @@ public class DataSource
 
     private Connection connection;
 
+    public static String getPath()
+    {
+        Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+        return path.toString();
+    }
+
     public boolean open()
     {
         try
         {
-            System.out.println(getPath());
             connection = DriverManager.getConnection(CONNECTION_PATH + DB_NAME);
             return true;
         }
@@ -58,9 +62,27 @@ public class DataSource
         }
     }
 
-    public static String getPath()
+    public List<Artists> queryArtists()
     {
-        Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-        return path.toString();
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS))
+        {
+            List<Artists> listOfArtists = new ArrayList<Artists>();
+
+            while(resultSet.next())
+            {
+                Artists artists = new Artists();
+                artists.setId(resultSet.getInt(COLUMN_ARTIST_ID));
+                artists.setName(resultSet.getString(COLUMN_ARTIST_NAME));
+
+                listOfArtists.add(artists);
+            }
+            return listOfArtists;
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
