@@ -4,34 +4,30 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.*;
 
-public class Main {
+public class Main
+{
+//    Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+
+    final static String DB_NAME = FileSystems.getDefault().getSeparator() + "testDB.db";
+    final static String CONNECTION_PATH = "jdbc:sqlite:E:\\POGramming\\java-programming-masterclass\\DataBases-Test";
+    final static String TABLE_CONTACTS = "contacts";
+    final static String COLUMN_NAME = "name";
+    final static String COLUMN_PHONE = "phone";
+    final static String COLUMN_EMAIL = "email";
 
     public static void main(String[] args)
     {
         try
         {
-            Path path = FileSystems.getDefault().getPath(".").toAbsolutePath();
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + path + "\\testDB.db");
+            Connection connection = DriverManager.getConnection(CONNECTION_PATH + DB_NAME);
 
             Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE IF NOT EXISTS contacts " +
-                    "(name TEXT, phone INTEGER, email TEXT)");
+            statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS +
+                    "(" + COLUMN_NAME + " TEXT, " + COLUMN_PHONE + " INTEGER, " + COLUMN_EMAIL + " TEXT)");
 
-//            statement.execute("INSERT INTO contacts (name, phone, email)" +
-//                    "VALUES ('Nikolay', 79846513, email@email.org)");
-//            statement.execute("INSERT INTO contacts (name, phone, email)" +
-//                    "VALUES ('Joe', 11111, 'joe@email.org')");
-//            statement.execute("INSERT INTO contacts (name, phone, email)" +
-//                    "VALUES ('Frederico', 12345678, 'fred@email.org')");
-//            statement.execute("INSERT INTO contacts (name, phone, email)" +
-//                    "VALUES ('CarrotMan', 852, 'carrot@email.org')");
+//            addToTable(statement, "'PotatoFarmer'", 122112, "'potatoes@mail.com'");
 
-//            statement.execute("UPDATE contacts SET phone = 22222 WHERE name = 'Joe'");
-
-//            statement.execute("DELETE FROM contacts WHERE name = 'Frederico'");
-
-            statement.execute("SELECT * FROM contacts");
-            ResultSet result = statement.getResultSet();
+            ResultSet result = statement.executeQuery("SELECT * FROM contacts");
             while(result.next())
             {
                 System.out.println(result.getString("name") + " || " +
@@ -47,5 +43,11 @@ public class Main {
         {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void addToTable(Statement statement, String nameToAdd, int numberToAdd, String mailToAdd) throws SQLException
+    {
+        statement.execute("INSERT INTO " + TABLE_CONTACTS + " (" + COLUMN_NAME + ", " + COLUMN_PHONE + ", "
+                + COLUMN_EMAIL + ")" + "VALUES (" + nameToAdd + ", " + numberToAdd + ", " + mailToAdd + ")");
     }
 }
