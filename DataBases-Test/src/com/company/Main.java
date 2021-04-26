@@ -6,10 +6,8 @@ import java.sql.*;
 
 public class Main
 {
-//    Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-
     final static String DB_NAME = FileSystems.getDefault().getSeparator() + "testDB.db";
-    final static String CONNECTION_PATH = "jdbc:sqlite:E:\\POGramming\\java-programming-masterclass\\DataBases-Test";
+    final static String CONNECTION_PATH = "jdbc:sqlite:" + getPath();
     final static String TABLE_CONTACTS = "contacts";
     final static String COLUMN_NAME = "name";
     final static String COLUMN_PHONE = "phone";
@@ -49,5 +47,11 @@ public class Main
     {
         statement.execute("INSERT INTO " + TABLE_CONTACTS + " (" + COLUMN_NAME + ", " + COLUMN_PHONE + ", "
                 + COLUMN_EMAIL + ")" + "VALUES (" + nameToAdd + ", " + numberToAdd + ", " + mailToAdd + ")");
+    }
+
+    public static String getPath()
+    {
+        Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+        return path.toString();
     }
 }
