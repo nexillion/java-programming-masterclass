@@ -55,6 +55,12 @@ public class Main
             } catch (NullPointerException ignored) {}
 
             datasource.extractMETADataSongs();
+
+            int count = datasource.getCount(DataSource.TABLE_SONGS);
+            System.out.println("Number of songs in DataBase: " + count);
+
+            datasource.createViewForSongArtists();
+
             datasource.close();
     }
 }
