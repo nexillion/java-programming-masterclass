@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main
 {
@@ -61,7 +62,17 @@ public class Main
 
             datasource.createViewForSongArtists();
 
-        songArtists = datasource.querySongFromView("'Dreams'");
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter song title: ");
+            String songTitle = scanner.nextLine();
+
+            songArtists = datasource.querySongFromView("'" + songTitle + "'");
+
+            if(songArtists.isEmpty())
+            {
+                System.out.println("No songs called " + songTitle + ".");
+                return;
+            }
 
         try
         {

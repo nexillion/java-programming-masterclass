@@ -15,31 +15,22 @@ public class DataSource
     public static final String COLUMN_ALBUM_ID = "_id";
     public static final String COLUMN_ALBUM_NAME = "name";
     public static final String COLUMN_ALBUM_ARTIST = "artist";
-    // when working with larger DataBases it's easier on the machine to just check column index than to check
-    // every string in every column for a match
-    public static final int INDEX_ALBUM_ID = 1;
-    public static final int INDEX_ALBUM_NAME = 2;
-    public static final int INDEX_ALBUM_ARTIST = 3;
 
     public static final String TABLE_ARTISTS = "artists";
     public static final String COLUMN_ARTIST_ID = "_id";
     public static final String COLUMN_ARTIST_NAME = "name";
+    // when working with larger DataBases it's easier on the machine to just check column index than to check
+    // every string in every column for a match
     public static final int INDEX_ARTIST_ID = 1;
     public static final int INDEX_ARTIST_NAME = 2;
 
     public static final String TABLE_SONGS = "songs";
-    public static final String COLUMN_SONG_ID = "_id";
     public static final String COLUMN_SONG_TRACK = "track";
     public static final String COLUMN_SONG_TITLE = "title";
     public static final String COLUMN_SONG_ALBUM = "album";
-    public static final int INDEX_SONG_ID = 1;
-    public static final int INDEX_SONG_TRACK = 2;
-    public static final int INDEX_SONG_TITLE = 3;
-    public static final int INDEX_SONG_ALBUM = 4;
 
     public static final int ORDER_BY_NONE = 1;
     public static final int ORDER_BY_ASC = 2;
-    public static final int ORDER_BY_DESC = 3;
 
     // SELECT albums.name FROM albums INNER JOIN artists ON albums.artists = artists._id WHERE artists.name = <...>
     public static final String QUERY_ALBUMS_BY_ARTIST_TEMPLATE = "SELECT " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME +
