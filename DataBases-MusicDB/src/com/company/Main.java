@@ -61,6 +61,19 @@ public class Main
 
             datasource.createViewForSongArtists();
 
-            datasource.close();
+        songArtists = datasource.querySongFromView("'Dreams'");
+
+        try
+        {
+            for(SongArtist artist : songArtists)
+            {
+                System.out.println("VIEW: Artist name = " + artist.getArtistName() +
+                        " | Album name = " + artist.getAlbumName() +
+                        " | Track number = " + artist.getTrack());
+            }
+        }
+        catch(NullPointerException ignored) {}
+
+        datasource.close();
     }
 }

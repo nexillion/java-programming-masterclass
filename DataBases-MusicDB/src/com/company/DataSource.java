@@ -78,6 +78,10 @@ public class DataSource
             + " ORDER BY " + TABLE_ARTISTS + "." + COLUMN_ARTIST_NAME + ", " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME
             + ", " + TABLE_SONGS + "." + COLUMN_SONG_TRACK;
 
+    // SELECT name, album, track FROM artistView WHERE title =
+    public static final String QUERY_SONG_FROM_VIEW_TEMPLATE =  "SELECT " + COLUMN_ARTIST_NAME + ", " + COLUMN_SONG_ALBUM
+            + ", " + COLUMN_SONG_TRACK + " FROM " + TABLE_ARTIST_SONG_VIEW + " WHERE " + COLUMN_SONG_TITLE + " = ";
+
     private Connection connection;
 
     public static String getPath()
@@ -265,6 +269,36 @@ public class DataSource
         {
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public List<SongArtist> querySongFromView(String title)
+    {
+        StringBuilder stringBuilder = new StringBuilder(QUERY_SONG_FROM_VIEW_TEMPLATE + title);
+
+        // System.out.println(stringBuilder.toString() + "\n");
+        System.out.println();
+
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(stringBuilder.toString()))
+        {
+            List<SongArtist> songArtists = new ArrayList<>();
+
+            while(resultSet.next())
+            {
+                SongArtist songArtist = new SongArtist
+                        (resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getInt(3));
+
+                songArtists.add(songArtist);
+            }
+            return songArtists;
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 }
