@@ -15,8 +15,8 @@ public class DataSource
     public static final String COLUMN_ALBUM_ID = "_id";
     public static final String COLUMN_ALBUM_NAME = "name";
     public static final String COLUMN_ALBUM_ARTIST = "artist";
-    // when working with larger DataBases it's easier on the processor to just check index than to check every string
-    // in every column for a match
+    // when working with larger DataBases it's easier on the machine to just check column index than to check
+    // every string in every column for a match
     public static final int INDEX_ALBUM_ID = 1;
     public static final int INDEX_ALBUM_NAME = 2;
     public static final int INDEX_ALBUM_ARTIST = 3;
@@ -40,6 +40,16 @@ public class DataSource
     public static final int ORDER_BY_NONE = 1;
     public static final int ORDER_BY_ASC = 2;
     public static final int ORDER_BY_DESC = 3;
+
+    // SELECT albums.name FROM albums INNER JOIN artists ON albums.artists = artists._id WHERE artists.name = <...>
+    public static final String QUERY_ALBUMS_BY_ARTIST_TEMPLATE = "SELECT " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME +
+            " FROM " + TABLE_ALBUMS + " INNER JOIN " + TABLE_ARTISTS + " ON " + TABLE_ALBUMS + "."
+            + COLUMN_ALBUM_ARTIST + " = " + TABLE_ARTISTS + "." + COLUMN_ARTIST_ID + " WHERE " + TABLE_ARTISTS + "."
+            + COLUMN_ARTIST_NAME + " = ";
+
+    // <...> ORDER BY albums.name COLLATE NOCASE <ASC/DESC/...>
+    public static final String QUERY_ALBUMS_BY_ARTIST_SORT = " ORDER BY " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME
+            + " COLLATE NOCASE ";
 
     private Connection connection;
 
@@ -113,6 +123,44 @@ public class DataSource
             return listOfArtists;
         }
         catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public List<String> queryAlbumsFromArtist(String artistName, int sortOrder)
+    {
+        StringBuilder stringBuilder = new StringBuilder(QUERY_ALBUMS_BY_ARTIST_TEMPLATE + artistName);
+
+        if(sortOrder != ORDER_BY_NONE)
+        {
+            stringBuilder.append(QUERY_ALBUMS_BY_ARTIST_SORT);
+
+            if(sortOrder == ORDER_BY_ASC)
+            {
+                stringBuilder.append("ASC");
+            }
+            else
+            {
+                stringBuilder.append("DESC");
+            }
+        }
+        // System.out.println(stringBuilder.toString() + "\n");
+
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(stringBuilder.toString()))
+        {
+            List<String> albums = new ArrayList<String>();
+            while(resultSet.next())
+            {
+                // add first column of the returned information
+                // there is only 1 column in this case so it's safe to hard code
+                albums.add(resultSet.getString(1));
+            }
+            return albums;
+        }
+        catch (SQLException e)
         {
             System.out.println(e.getMessage());
             return null;

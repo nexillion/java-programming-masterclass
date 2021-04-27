@@ -25,8 +25,20 @@ public class Main
                 {
                     System.out.println("_ID = " + artist.getId() + ", Artist Name = " + artist.getName());
                 }
-            }
-            catch (NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
+
+            System.out.println();
+
+            List<String> albumsFromArtist = datasource.queryAlbumsFromArtist("'Iron Maiden'", DataSource.ORDER_BY_ASC);
+
+            try
+            {
+                for(String album : albumsFromArtist)
+                {
+                    System.out.println(album);
+                }
+            } catch (NullPointerException ignored) {}
+
             datasource.close();
     }
 }
