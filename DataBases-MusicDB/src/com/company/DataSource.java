@@ -51,6 +51,19 @@ public class DataSource
     public static final String QUERY_ALBUMS_BY_ARTIST_SORT = " ORDER BY " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME
             + " COLLATE NOCASE ";
 
+    // SELECT artists.name, albums.name, songs.track FROM songs INNER JOIN albums ON songs.album = albums._id
+    // INNER JOIN artists ON albums.artist = artists._id WHERE songs.title = <...>
+    public static final String QUERY_ARTIST_FOR_SONG_TEMPLATE = "SELECT " + TABLE_ARTISTS + "." + COLUMN_ARTIST_NAME
+            + ", " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME + ", " + TABLE_SONGS + "." + COLUMN_SONG_TRACK + " FROM "
+            + TABLE_SONGS + " INNER JOIN " + TABLE_ALBUMS + " ON " + TABLE_SONGS + "." + COLUMN_SONG_ALBUM + " = "
+            + TABLE_ALBUMS + "." + COLUMN_ALBUM_ID + " INNER JOIN " + TABLE_ARTISTS + " ON " + TABLE_ALBUMS + "."
+            + COLUMN_ALBUM_ARTIST + " = " + TABLE_ARTISTS + "." + COLUMN_ARTIST_ID + " WHERE " + TABLE_SONGS + "."
+            + COLUMN_SONG_TITLE + " = ";
+
+    // <...> ORDER BY artists.name, albums.name COLLATE NOCASE <ASC/DESC/...>
+    public static final String QUERY_ARTIST_FOR_SONG_SORT = " ORDER BY " + TABLE_ARTISTS + "." + COLUMN_ARTIST_NAME
+            + ", " + TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME + " COLLATE NOCASE ";
+
     private Connection connection;
 
     public static String getPath()
