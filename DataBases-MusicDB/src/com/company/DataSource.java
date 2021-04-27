@@ -15,15 +15,31 @@ public class DataSource
     public static final String COLUMN_ALBUM_ID = "_id";
     public static final String COLUMN_ALBUM_NAME = "name";
     public static final String COLUMN_ALBUM_ARTIST = "artist";
+    // when working with larger DataBases it's easier on the processor to just check index than to check every string
+    // in every column for a match
+    public static final int INDEX_ALBUM_ID = 1;
+    public static final int INDEX_ALBUM_NAME = 2;
+    public static final int INDEX_ALBUM_ARTIST = 3;
 
     public static final String TABLE_ARTISTS = "artists";
     public static final String COLUMN_ARTIST_ID = "_id";
     public static final String COLUMN_ARTIST_NAME = "name";
+    public static final int INDEX_ARTIST_ID = 1;
+    public static final int INDEX_ARTIST_NAME = 2;
 
     public static final String TABLE_SONGS = "songs";
+    public static final String COLUMN_SONG_ID = "_id";
     public static final String COLUMN_SONG_TRACK = "track";
     public static final String COLUMN_SONG_TITLE = "title";
     public static final String COLUMN_SONG_ALBUM = "album";
+    public static final int INDEX_SONG_ID = 1;
+    public static final int INDEX_SONG_TRACK = 2;
+    public static final int INDEX_SONG_TITLE = 3;
+    public static final int INDEX_SONG_ALBUM = 4;
+
+    public static final int ORDER_BY_NONE = 1;
+    public static final int ORDER_BY_ASC = 2;
+    public static final int ORDER_BY_DESC = 3;
 
     private Connection connection;
 
@@ -62,18 +78,35 @@ public class DataSource
         }
     }
 
-    public List<Artists> queryArtists()
+    public List<Artists> queryArtists(int sortOrder)
     {
+        StringBuilder stringBuilder = new StringBuilder("SELECT * FROM ");
+        stringBuilder.append(TABLE_ARTISTS);
+
+        if(sortOrder != ORDER_BY_NONE)
+        {
+            stringBuilder.append(" ORDER BY " + COLUMN_ARTIST_NAME + " COLLATE NOCASE ");
+
+            if(sortOrder == ORDER_BY_ASC)
+            {
+                stringBuilder.append("ASC");
+            }
+            else
+            {
+                stringBuilder.append("DESC");
+            }
+        }
+
         try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS))
+            ResultSet resultSet = statement.executeQuery(stringBuilder.toString()))
         {
             List<Artists> listOfArtists = new ArrayList<Artists>();
 
             while(resultSet.next())
             {
                 Artists artists = new Artists();
-                artists.setId(resultSet.getInt(COLUMN_ARTIST_ID));
-                artists.setName(resultSet.getString(COLUMN_ARTIST_NAME));
+                artists.setId(resultSet.getInt(INDEX_ARTIST_ID));
+                artists.setName(resultSet.getString(INDEX_ARTIST_NAME));
 
                 listOfArtists.add(artists);
             }

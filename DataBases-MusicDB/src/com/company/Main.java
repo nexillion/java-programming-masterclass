@@ -13,16 +13,20 @@ public class Main
                 return;
             }
 
-        List<Artists> artists = datasource.queryArtists();
+        List<Artists> artists = datasource.queryArtists(DataSource.ORDER_BY_ASC);
             if(artists == null)
             {
                 System.out.println("No artists queried.");
             }
 
-            for(Artists artist : artists)
+            try
             {
-                System.out.println("_ID = " + artist.getId() + ", Artist Name = " + artist.getName());
+                for(Artists artist : artists)
+                {
+                    System.out.println("_ID = " + artist.getId() + ", Artist Name = " + artist.getName());
+                }
             }
+            catch (NullPointerException ignored) {}
             datasource.close();
     }
 }
