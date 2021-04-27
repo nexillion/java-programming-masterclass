@@ -72,6 +72,15 @@ public class DataSource
         return path.toString();
     }
 
+    public static String appendAscOrDesc(int sortOrder)
+    {
+        if(sortOrder == ORDER_BY_ASC)
+        {
+            return "ASC";
+        }
+        return "DESC";
+    }
+
     public boolean open()
     {
         try
@@ -108,16 +117,7 @@ public class DataSource
 
         if(sortOrder != ORDER_BY_NONE)
         {
-            stringBuilder.append(" ORDER BY " + COLUMN_ARTIST_NAME + " COLLATE NOCASE ");
-
-            if(sortOrder == ORDER_BY_ASC)
-            {
-                stringBuilder.append("ASC");
-            }
-            else
-            {
-                stringBuilder.append("DESC");
-            }
+            stringBuilder.append(" ORDER BY " + COLUMN_ARTIST_NAME + " COLLATE NOCASE " + appendAscOrDesc(sortOrder));
         }
 
         try(Statement statement = connection.createStatement();
@@ -148,16 +148,7 @@ public class DataSource
 
         if(sortOrder != ORDER_BY_NONE)
         {
-            stringBuilder.append(QUERY_ALBUMS_BY_ARTIST_SORT);
-
-            if(sortOrder == ORDER_BY_ASC)
-            {
-                stringBuilder.append("ASC");
-            }
-            else
-            {
-                stringBuilder.append("DESC");
-            }
+            stringBuilder.append(QUERY_ALBUMS_BY_ARTIST_SORT + appendAscOrDesc(sortOrder));
         }
         // System.out.println(stringBuilder.toString() + "\n");
 
@@ -177,6 +168,58 @@ public class DataSource
         {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    public List<SongArtist> queryArtistForSong(String songName, int sortOrder)
+    {
+        StringBuilder stringBuilder = new StringBuilder(QUERY_ARTIST_FOR_SONG_TEMPLATE + songName
+                + QUERY_ALBUMS_BY_ARTIST_SORT + appendAscOrDesc(sortOrder));
+
+        // System.out.println(stringBuilder.toString() + "\n");
+
+        try(Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(stringBuilder.toString()))
+        {
+            List<SongArtist> songArtists = new ArrayList<SongArtist>();
+
+            while(resultSet.next())
+            {
+                // columns are as mentioned: artists.name | albums.name | songs.track
+                SongArtist songArtist = new SongArtist
+                        (resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getInt(3));
+
+                songArtists.add(songArtist);
+            }
+            return songArtists;
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void extractMETADataSongs()
+    {
+        System.out.println();
+        String string = "SELECT * FROM " + TABLE_SONGS;
+
+        try(Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(string))
+        {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for(int i = 1; i<= columnCount; i++)
+            {
+                System.out.println("Column " + i + " in the songs table is named " + metaData.getColumnName(i));
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
         }
     }
 }

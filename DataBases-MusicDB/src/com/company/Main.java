@@ -29,7 +29,8 @@ public class Main
 
             System.out.println();
 
-            List<String> albumsFromArtist = datasource.queryAlbumsFromArtist("'Iron Maiden'", DataSource.ORDER_BY_ASC);
+            List<String> albumsFromArtist = datasource.queryAlbumsFromArtist("'Iron Maiden'",
+                    DataSource.ORDER_BY_ASC);
 
             try
             {
@@ -39,6 +40,21 @@ public class Main
                 }
             } catch (NullPointerException ignored) {}
 
+            System.out.println();
+
+            List<SongArtist> songArtists = datasource.queryArtistForSong("'Rat Salad'",
+                    DataSource.ORDER_BY_ASC);
+
+            try
+            {
+                for(SongArtist artist : songArtists)
+                {
+                    System.out.println("Artist = " + artist.getArtistName()
+                            + " | Album = " + artist.getAlbumName() + " | Track = " + artist.getTrack());
+                }
+            } catch (NullPointerException ignored) {}
+
+            datasource.extractMETADataSongs();
             datasource.close();
     }
 }
