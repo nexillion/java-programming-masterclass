@@ -66,7 +66,7 @@ public class Main
             System.out.println("Enter song title: ");
             String songTitle = scanner.nextLine();
 
-            songArtists = datasource.querySongFromView("'" + songTitle + "'");
+            songArtists = datasource.querySongFromView(songTitle);
 
             if(songArtists.isEmpty())
             {

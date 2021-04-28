@@ -332,9 +332,11 @@ public class DataSource
         // System.out.println(stringBuilder.toString() + "\n");
         System.out.println();
 
-        try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(stringBuilder.toString()))
+        try
         {
+            preparedQuerySongFromView.setString(1, title);
+            ResultSet resultSet = preparedQuerySongFromView.executeQuery();
+
             List<SongArtist> songArtists = new ArrayList<>();
 
             while(resultSet.next())
