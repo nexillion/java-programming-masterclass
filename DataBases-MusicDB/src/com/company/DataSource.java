@@ -73,7 +73,42 @@ public class DataSource
     public static final String QUERY_SONG_FROM_VIEW_TEMPLATE =  "SELECT " + COLUMN_ARTIST_NAME + ", " + COLUMN_SONG_ALBUM
             + ", " + COLUMN_SONG_TRACK + " FROM " + TABLE_ARTIST_SONG_VIEW + " WHERE " + COLUMN_SONG_TITLE + " = ";
 
+    // SELECT name, album, track FROM artistView WHERE title = ?
+    public static final String PREPARED_QUERY_SONG_FROM_VIEW = "SELECT " + COLUMN_ARTIST_NAME + ", " +
+            COLUMN_SONG_ALBUM + ", " + COLUMN_SONG_TRACK + " FROM " + TABLE_ARTIST_SONG_VIEW +
+            " WHERE " + COLUMN_SONG_TITLE + " = ?";
+
+    // INSERT INTO artists(name) VALUES(?)
+    public static final String PREPARED_IN_ARTIST = "INSERT INTO " + TABLE_ARTISTS +
+            '(' + COLUMN_ARTIST_NAME + ") VALUES(?)";
+
+    // INSERT INTO albums(name, artist) VALUES(?, ?)
+    public static final String PREPARED_IN_ALBUMS = "INSERT INTO " + TABLE_ALBUMS +
+            '(' + COLUMN_ALBUM_NAME + ", " + COLUMN_ALBUM_ARTIST + ") VALUES(?, ?)";
+
+    // INSERT INTO albums(track, title, album) VALUES(?, ?, ?)
+    public static final String PREPARED_IN_SONGS = "INSERT INTO " + TABLE_SONGS +
+            '(' + COLUMN_SONG_TRACK + ", " + COLUMN_SONG_TITLE + ", " + COLUMN_SONG_ALBUM +
+            ") VALUES(?, ?, ?)";
+
+    // SELECT _ID FROM artists WHERE name = ?
+    public static final String PREPARED_QUERY_ARTIST = "SELECT " + COLUMN_ARTIST_ID + " FROM " +
+            TABLE_ARTISTS + " WHERE " + COLUMN_ARTIST_NAME + " = ?";
+
+    // SELECT _ID FROM albums WHERE name = ?
+    public static final String PREPARED_QUERY_ALBUM = "SELECT " + COLUMN_ALBUM_ID + " FROM " +
+            TABLE_ALBUMS + " WHERE " + COLUMN_ALBUM_NAME + " = ?";
+
     private Connection connection;
+
+    private PreparedStatement preparedQuerySongFromView;
+
+    private PreparedStatement preparedInArtists;
+    private PreparedStatement preparedInAlbums;
+    private PreparedStatement preparedInSongs;
+
+    private PreparedStatement preparedQueryArtist;
+    private PreparedStatement preparedQueryAlbum;
 
     public static String getPath()
     {
@@ -95,11 +130,21 @@ public class DataSource
         try
         {
             connection = DriverManager.getConnection(CONNECTION_PATH + DB_NAME);
+
+            preparedQuerySongFromView = connection.prepareStatement(PREPARED_QUERY_SONG_FROM_VIEW);
+
+            preparedInArtists = connection.prepareStatement(PREPARED_IN_ARTIST);
+            preparedInAlbums = connection.prepareStatement(PREPARED_IN_ALBUMS);
+            preparedInSongs = connection.prepareStatement(PREPARED_IN_SONGS);
+
+            preparedQueryArtist = connection.prepareStatement(PREPARED_QUERY_ARTIST);
+            preparedQueryAlbum = connection.prepareStatement(PREPARED_QUERY_ALBUM);
+
             return true;
         }
         catch(SQLException e)
         {
-            System.out.println("Error opening DataBase:\n" + e.getMessage());
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -108,6 +153,23 @@ public class DataSource
     {
         try
         {
+            if(preparedQuerySongFromView  != null
+                    || preparedInArtists  != null
+                    || preparedInAlbums  != null
+                    || preparedInSongs  != null
+                    || preparedQueryArtist  != null
+                    || preparedQueryAlbum != null)
+            {
+                try
+                {
+                    preparedInArtists.close();
+                    preparedInAlbums.close();
+                    preparedInSongs.close();
+                    preparedQueryArtist.close();
+                    preparedQueryAlbum.close();
+                } catch (NullPointerException ignored) {}
+            }
+
             if(connection != null)
             {
                 connection.close();
@@ -115,7 +177,7 @@ public class DataSource
         }
         catch(SQLException e)
         {
-            System.out.println("Error closing DataBase:\n" + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
