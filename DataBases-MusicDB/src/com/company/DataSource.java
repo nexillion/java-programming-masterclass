@@ -99,6 +99,10 @@ public class DataSource
     public static final String PREPARED_QUERY_ALBUM = "SELECT " + COLUMN_ALBUM_ID + " FROM " +
             TABLE_ALBUMS + " WHERE " + COLUMN_ALBUM_NAME + " = ?";
 
+    // SELECT title FROM songs WHERE title = ?
+    public static final String PREPARED_CHECK_SONG = "SELECT " + COLUMN_SONG_TITLE + " FROM "
+            + TABLE_SONGS + " WHERE " + COLUMN_SONG_TITLE + " = ?";
+
     private Connection connection;
 
     private PreparedStatement preparedQuerySongFromView;
@@ -106,6 +110,8 @@ public class DataSource
     private PreparedStatement preparedInArtists;
     private PreparedStatement preparedInAlbums;
     private PreparedStatement preparedInSongs;
+
+    private PreparedStatement preparedCheckSong;
 
     private PreparedStatement preparedQueryArtist;
     private PreparedStatement preparedQueryAlbum;
@@ -137,6 +143,8 @@ public class DataSource
             preparedInAlbums = connection.prepareStatement(PREPARED_IN_ALBUMS);
             preparedInSongs = connection.prepareStatement(PREPARED_IN_SONGS);
 
+            preparedCheckSong = connection.prepareStatement(PREPARED_CHECK_SONG);
+
             preparedQueryArtist = connection.prepareStatement(PREPARED_QUERY_ARTIST);
             preparedQueryAlbum = connection.prepareStatement(PREPARED_QUERY_ALBUM);
 
@@ -157,6 +165,7 @@ public class DataSource
                     || preparedInArtists  != null
                     || preparedInAlbums  != null
                     || preparedInSongs  != null
+                    || preparedCheckSong != null
                     || preparedQueryArtist  != null
                     || preparedQueryAlbum != null)
             {
@@ -166,6 +175,7 @@ public class DataSource
                     preparedInArtists.close();
                     preparedInAlbums.close();
                     preparedInSongs.close();
+                    preparedCheckSong.close();
                     preparedQueryArtist.close();
                     preparedQueryAlbum.close();
                 } catch (NullPointerException ignored) {}
@@ -358,7 +368,7 @@ public class DataSource
     private int insertInArtists(String name) throws SQLException
     {
         preparedQueryArtist.setString(1, name);
-        ResultSet resultSet = preparedQuerySongFromView.executeQuery();
+        ResultSet resultSet = preparedQueryArtist.executeQuery();
 
         if(resultSet.next())
         {
@@ -418,8 +428,43 @@ public class DataSource
         }
     }
 
-    private void insertInSongs(String title, String artist, String album, int track)
+    private boolean checkIfSongExists(String songName)
     {
+        System.out.println();
+        try
+        {
+            preparedCheckSong.setString(1, songName);
+            ResultSet resultSet = preparedCheckSong.executeQuery();
+
+            try
+            {
+                if(resultSet.getString(1).equals(songName))
+                {
+                    System.out.println("Song " + songName + " already exists in database.");
+                    return true;
+                }
+            }
+            catch (NullPointerException e)
+            {
+                System.out.println("Adding " + songName + " ...");
+                return false;
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Adding " + songName + " ...");
+            return false;
+        }
+        return false;
+    }
+
+    public void insertInSongs(String title, String artist, String album, int track)
+    {
+        if(checkIfSongExists(title))
+        {
+            return;
+        }
+
         try
         {
             connection.setAutoCommit(false);
@@ -458,7 +503,7 @@ public class DataSource
         {
             try
             {
-                System.out.println("Resetting default commit behavior.");
+                // System.out.println("Resetting default commit behavior.");
                 connection.setAutoCommit(true);
             }
             catch(SQLException e)

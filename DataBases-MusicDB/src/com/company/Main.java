@@ -87,6 +87,8 @@ public class Main
         }
         catch(NullPointerException ignored) {}
 
+        datasource.insertInSongs("Demon Inside", "Endgame", "Theory Of Everything", 1);
+
         datasource.close();
     }
 }
