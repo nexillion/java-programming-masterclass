@@ -82,6 +82,9 @@ public class DataSource
     public static final String PREPARED_IN_ARTIST = "INSERT INTO " + TABLE_ARTISTS +
             '(' + COLUMN_ARTIST_NAME + ") VALUES(?)";
 
+    // SELECT ? FROM artists
+    public static final String PREPARED_CHECK_ARTIST = "SELECT ? FROM " + TABLE_ARTISTS;
+
     // INSERT INTO albums(name, artist) VALUES(?, ?)
     public static final String PREPARED_IN_ALBUMS = "INSERT INTO " + TABLE_ALBUMS +
             '(' + COLUMN_ALBUM_NAME + ", " + COLUMN_ALBUM_ARTIST + ") VALUES(?, ?)";
@@ -106,6 +109,8 @@ public class DataSource
     private PreparedStatement preparedInArtists;
     private PreparedStatement preparedInAlbums;
     private PreparedStatement preparedInSongs;
+
+    private PreparedStatement preparedCheckArtist;
 
     private PreparedStatement preparedQueryArtist;
     private PreparedStatement preparedQueryAlbum;
@@ -137,6 +142,8 @@ public class DataSource
             preparedInAlbums = connection.prepareStatement(PREPARED_IN_ALBUMS);
             preparedInSongs = connection.prepareStatement(PREPARED_IN_SONGS);
 
+            preparedCheckArtist = connection.prepareStatement(PREPARED_CHECK_ARTIST);
+
             preparedQueryArtist = connection.prepareStatement(PREPARED_QUERY_ARTIST);
             preparedQueryAlbum = connection.prepareStatement(PREPARED_QUERY_ALBUM);
 
@@ -157,14 +164,17 @@ public class DataSource
                     || preparedInArtists  != null
                     || preparedInAlbums  != null
                     || preparedInSongs  != null
+                    || preparedCheckArtist != null
                     || preparedQueryArtist  != null
                     || preparedQueryAlbum != null)
             {
                 try
                 {
+                    preparedQuerySongFromView.close();
                     preparedInArtists.close();
                     preparedInAlbums.close();
                     preparedInSongs.close();
+                    preparedCheckArtist.close();
                     preparedQueryArtist.close();
                     preparedQueryAlbum.close();
                 } catch (NullPointerException ignored) {}
@@ -327,9 +337,6 @@ public class DataSource
 
     public List<SongArtist> querySongFromView(String title)
     {
-        StringBuilder stringBuilder = new StringBuilder(QUERY_SONG_FROM_VIEW_TEMPLATE + title);
-
-        // System.out.println(stringBuilder.toString() + "\n");
         System.out.println();
 
         try
@@ -355,5 +362,58 @@ public class DataSource
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    private boolean checkIfArtistIsExisting(int column, String name) throws SQLException
+    {
+        System.out.println();
+
+        preparedCheckArtist.setString(column, name);
+        ResultSet resultSet = preparedCheckArtist.executeQuery();
+
+        if(resultSet != null)
+        {
+            System.out.println("Artist " + name + " already exists in database.");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public int insertInArtists(String name) throws SQLException
+    {
+        if(checkIfArtistIsExisting(1, name))
+        {
+            preparedQueryArtist.setString(1, name);
+            ResultSet resultSet = preparedQuerySongFromView.executeQuery();
+
+            if(resultSet.next())
+            {
+                return resultSet.getInt(1);
+            }
+            else
+            {
+                preparedInArtists.setString(1, name);
+
+                int insertCheck = preparedInArtists.executeUpdate();
+                if(insertCheck != 1)
+                {
+                    throw new SQLException("Insertion of " + name + " failed.");
+                }
+
+                ResultSet generatedKeys = preparedInArtists.getGeneratedKeys();
+                if(generatedKeys.next())
+                {
+                    return generatedKeys.getInt(1);
+                }
+                else
+                {
+                    throw new SQLException("Couldn't get _id for artist: " + name);
+                }
+            }
+        }
+        return -1;
     }
 }

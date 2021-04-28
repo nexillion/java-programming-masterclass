@@ -1,5 +1,6 @@
 package com.company;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -62,28 +63,38 @@ public class Main
 
             datasource.createViewForSongArtists();
 
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter song title: ");
-            String songTitle = scanner.nextLine();
-
-            songArtists = datasource.querySongFromView(songTitle);
-
-            if(songArtists.isEmpty())
-            {
-                System.out.println("No songs called " + songTitle + ".");
-                return;
-            }
+//            Scanner scanner = new Scanner(System.in);
+//            System.out.println("Enter song title: ");
+//            String songTitle = scanner.nextLine();
+//
+//            songArtists = datasource.querySongFromView(songTitle);
+//
+//            if(songArtists.isEmpty())
+//            {
+//                System.out.println("No songs called " + songTitle + ".");
+//                return;
+//            }
+//
+//        try
+//        {
+//            for(SongArtist artist : songArtists)
+//            {
+//                System.out.println("VIEW: Artist name = " + artist.getArtistName() +
+//                        " | Album name = " + artist.getAlbumName() +
+//                        " | Track number = " + artist.getTrack());
+//            }
+//        }
+//        catch(NullPointerException ignored) {}
 
         try
         {
-            for(SongArtist artist : songArtists)
-            {
-                System.out.println("VIEW: Artist name = " + artist.getArtistName() +
-                        " | Album name = " + artist.getAlbumName() +
-                        " | Track number = " + artist.getTrack());
-            }
+            int i = datasource.insertInArtists("Troggs");
+            System.out.println(i);
         }
-        catch(NullPointerException ignored) {}
+        catch (SQLException e)
+        {
+            e.getMessage();
+        }
 
         datasource.close();
     }
