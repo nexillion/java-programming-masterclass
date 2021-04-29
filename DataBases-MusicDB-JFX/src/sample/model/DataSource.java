@@ -1,5 +1,8 @@
 package sample.model;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.*;
@@ -219,8 +222,14 @@ public class DataSource
             while(resultSet.next())
             {
                 Artists artists = new Artists();
-                artists.setId(resultSet.getInt(INDEX_ARTIST_ID));
-                artists.setName(resultSet.getString(INDEX_ARTIST_NAME));
+
+                SimpleIntegerProperty simpleIntegerProperty =
+                        new SimpleIntegerProperty((resultSet.getInt(INDEX_ARTIST_ID)));
+                artists.setId(simpleIntegerProperty);
+
+                SimpleStringProperty simpleStringProperty =
+                        new SimpleStringProperty((resultSet.getString(INDEX_ARTIST_NAME)));
+                artists.setName(simpleStringProperty);
 
                 listOfArtists.add(artists);
             }

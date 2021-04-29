@@ -14,7 +14,7 @@ public class Main extends Application
     public void start(Stage primaryStage) throws Exception
     {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("MusicDB-JFX");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
