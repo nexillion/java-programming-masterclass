@@ -21,11 +21,13 @@ public class Albums
         return id.get();
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name.get();
     }
 
-    public int getArtistId() {
+    public int getArtistId()
+    {
         return artistId.get();
     }
 
@@ -34,11 +36,13 @@ public class Albums
         this.id.set(id);
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name.set(name);
     }
 
-    public void setArtistId(int artistId) {
+    public void setArtistId(int artistId)
+    {
         this.artistId.set(artistId);
     }
 }
