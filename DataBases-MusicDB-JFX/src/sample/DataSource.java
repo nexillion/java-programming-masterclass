@@ -228,6 +228,12 @@ public class DataSource
 
             while(resultSet.next())
             {
+                try
+                {
+                    Thread.sleep(10);
+                }
+                catch (InterruptedException ignored) {}
+
                 Artists artists = new Artists();
 
                 artists.setId((resultSet.getInt(INDEX_ARTIST_ID)));
