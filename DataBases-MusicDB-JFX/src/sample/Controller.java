@@ -5,8 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
-import sample.model.Artists;
-import sample.model.DataSource;
 
 public class Controller
 {
@@ -17,6 +15,8 @@ public class Controller
     {
         Task<ObservableList<Artists>> task = new GetAllArtistsTask();
         artistTable.itemsProperty().bind(task.valueProperty());
+
+        new Thread(task).start();
     }
 }
 

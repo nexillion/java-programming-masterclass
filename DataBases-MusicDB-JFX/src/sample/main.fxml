@@ -15,11 +15,11 @@
     <center>
         <TableView fx:id="artistTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn prefWidth="${artistTable.width}" text="Name" >
-                    <cellFactory>
+                <TableColumn prefWidth="${artistTable.width}" text="Name">
+                    <cellValueFactory>
                         <PropertyValueFactory property="name"/>
-                    </cellFactory>
-                </TableColumn>>
+                    </cellValueFactory>
+                </TableColumn>
             </columns>
             <BorderPane.margin>
                 <Insets right="10.0" />

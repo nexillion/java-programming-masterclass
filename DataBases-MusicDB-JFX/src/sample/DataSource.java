@@ -1,7 +1,4 @@
-package sample.model;
-
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+package sample;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -223,13 +220,8 @@ public class DataSource
             {
                 Artists artists = new Artists();
 
-                SimpleIntegerProperty simpleIntegerProperty =
-                        new SimpleIntegerProperty((resultSet.getInt(INDEX_ARTIST_ID)));
-                artists.setId(simpleIntegerProperty);
-
-                SimpleStringProperty simpleStringProperty =
-                        new SimpleStringProperty((resultSet.getString(INDEX_ARTIST_NAME)));
-                artists.setName(simpleStringProperty);
+                artists.setId((resultSet.getInt(INDEX_ARTIST_ID)));
+                artists.setName((resultSet.getString(INDEX_ARTIST_NAME)));
 
                 listOfArtists.add(artists);
             }
