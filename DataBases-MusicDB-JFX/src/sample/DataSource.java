@@ -107,6 +107,10 @@ public class DataSource
     public static final String PREPARED_QUERY_ALBUMS_BY_ARTIST_ID = "SELECT * FROM " + TABLE_ALBUMS +
             " WHERE " + COLUMN_ALBUM_ARTIST + " = ? ORDER BY " + COLUMN_ALBUM_NAME + " COLLATE NOCASE";
 
+    // UPDATE artists SET name = ? WHERE _id = ?
+    public static final String PREPARED_UPDATE_ARTIST_NAME = "UPDATE " + TABLE_ARTISTS + " SET " +
+            COLUMN_ARTIST_NAME + " = ? WHERE " + COLUMN_ARTIST_ID + " = ?";
+
     private Connection connection;
 
     private PreparedStatement preparedQuerySongFromView;
@@ -121,6 +125,8 @@ public class DataSource
     private PreparedStatement preparedQueryAlbum;
 
     private PreparedStatement preparedQueryAlbumsByArtistId;
+
+    private PreparedStatement preparedUpdateArtistName;
 
     private static DataSource instance = new DataSource();
     // constructor
@@ -165,6 +171,8 @@ public class DataSource
 
             preparedQueryAlbumsByArtistId = connection.prepareStatement(PREPARED_QUERY_ALBUMS_BY_ARTIST_ID);
 
+            preparedUpdateArtistName = connection.prepareStatement(PREPARED_UPDATE_ARTIST_NAME);
+
             return true;
         }
         catch(SQLException e)
@@ -185,7 +193,8 @@ public class DataSource
                     || preparedCheckSong != null
                     || preparedQueryArtist  != null
                     || preparedQueryAlbum != null
-                    || preparedQueryAlbumsByArtistId != null)
+                    || preparedQueryAlbumsByArtistId != null
+                    || preparedUpdateArtistName != null)
             {
                 try
                 {
@@ -197,6 +206,7 @@ public class DataSource
                     preparedQueryArtist.close();
                     preparedQueryAlbum.close();
                     preparedQueryAlbumsByArtistId.close();
+                    preparedUpdateArtistName.close();
                 } catch (NullPointerException ignored) {}
             }
 
@@ -503,6 +513,24 @@ public class DataSource
         {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    public boolean updateArtistName(int id, String newName)
+    {
+        try
+        {
+            preparedUpdateArtistName.setString(1, newName);
+            preparedUpdateArtistName.setInt(2, id);
+
+            int affectedRecords = preparedUpdateArtistName.executeUpdate();
+            return affectedRecords == 1;
+
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 }
