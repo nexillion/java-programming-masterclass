@@ -9,7 +9,7 @@ import javafx.scene.control.TableView;
 public class Controller
 {
     @FXML
-    private TableView<Artists> artistTable;
+    private TableView artistTable;
 
     public void listArtists()
     {
@@ -17,6 +17,32 @@ public class Controller
         artistTable.itemsProperty().bind(task.valueProperty());
 
         new Thread(task).start();
+    }
+
+    @FXML
+    public void listAlbumsForArtists()
+    {
+        final Artists artists = (Artists) artistTable.getSelectionModel().getSelectedItem();
+        if(artists == null)
+        {
+            System.out.println("NO ARTIST SELECTED");
+            return;
+        }
+
+        Task<ObservableList<Albums>> task = new Task<ObservableList<Albums>>()
+        {
+            @Override
+            protected ObservableList<Albums> call()
+            {
+                return FXCollections.observableArrayList(DataSource.getInstance()
+                        .queryAlbumsForArtistId(artists.getId()));
+            }
+        };
+
+        artistTable.itemsProperty().bind(task.valueProperty());
+
+        new Thread(task).start();
+
     }
 }
 

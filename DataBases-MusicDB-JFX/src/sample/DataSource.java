@@ -103,6 +103,10 @@ public class DataSource
     public static final String PREPARED_CHECK_SONG = "SELECT " + COLUMN_SONG_TITLE + " FROM "
             + TABLE_SONGS + " WHERE " + COLUMN_SONG_TITLE + " = ?";
 
+    // SELECT * FROM albums WHERE artist = ? ORDER BY name COLLATE NOCASE
+    public static final String PREPARED_QUERY_ALBUMS_BY_ARTIST_ID = "SELECT * FROM " + TABLE_ALBUMS +
+            " WHERE " + COLUMN_ALBUM_ARTIST + " = ? ORDER BY " + COLUMN_ALBUM_NAME + " COLLATE NOCASE";
+
     private Connection connection;
 
     private PreparedStatement preparedQuerySongFromView;
@@ -115,6 +119,8 @@ public class DataSource
 
     private PreparedStatement preparedQueryArtist;
     private PreparedStatement preparedQueryAlbum;
+
+    private PreparedStatement preparedQueryAlbumsByArtistId;
 
     private static DataSource instance = new DataSource();
     // constructor
@@ -157,6 +163,8 @@ public class DataSource
             preparedQueryArtist = connection.prepareStatement(PREPARED_QUERY_ARTIST);
             preparedQueryAlbum = connection.prepareStatement(PREPARED_QUERY_ALBUM);
 
+            preparedQueryAlbumsByArtistId = connection.prepareStatement(PREPARED_QUERY_ALBUMS_BY_ARTIST_ID);
+
             return true;
         }
         catch(SQLException e)
@@ -176,7 +184,8 @@ public class DataSource
                     || preparedInSongs  != null
                     || preparedCheckSong != null
                     || preparedQueryArtist  != null
-                    || preparedQueryAlbum != null)
+                    || preparedQueryAlbum != null
+                    || preparedQueryAlbumsByArtistId != null)
             {
                 try
                 {
@@ -187,6 +196,7 @@ public class DataSource
                     preparedCheckSong.close();
                     preparedQueryArtist.close();
                     preparedQueryAlbum.close();
+                    preparedQueryAlbumsByArtistId.close();
                 } catch (NullPointerException ignored) {}
             }
 
@@ -461,6 +471,32 @@ public class DataSource
             {
                 System.out.println("Couldn't reset auto-commit: " + e.getMessage());
             }
+        }
+    }
+
+    public List<Albums> queryAlbumsForArtistId(int id)
+    {
+        try
+        {
+            preparedQueryAlbumsByArtistId.setInt(1, id);
+            ResultSet resultSet = preparedQueryAlbumsByArtistId.executeQuery();
+
+            List<Albums> albums = new ArrayList<Albums>();
+            while(resultSet.next())
+            {
+                Albums album = new Albums();
+                album.setId(resultSet.getInt(1));
+                album.setName(resultSet.getString(2));
+                album.setArtistId(resultSet.getInt(3));
+
+                albums.add(album);
+            }
+            return albums;
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 }
