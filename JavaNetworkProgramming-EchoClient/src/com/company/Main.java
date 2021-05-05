@@ -34,7 +34,8 @@ public class Main
             }
             while(!echoString.equals("exit"));
 
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.out.println("Client Error: " + e.getMessage());
         }
