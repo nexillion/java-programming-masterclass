@@ -13,6 +13,8 @@ public class Main
     {
         try (Socket socket = new Socket("localhost", 5000))
         {
+            socket.setSoTimeout(10000);
+
             BufferedReader echoes = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter stringToEcho = new PrintWriter(socket.getOutputStream(), true);
 

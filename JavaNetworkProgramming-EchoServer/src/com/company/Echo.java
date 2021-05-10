@@ -28,10 +28,14 @@ public class Echo extends Thread
             while(true)
             {
                 String echoString = input.readLine();
+                System.out.println("Received client input: " + echoString);
                 if(echoString.equals("exit"))
                 {
                     break;
                 }
+
+                // threadSleep(15000);
+
                 output.println("Server Reply: " + echoString);
             }
         }
@@ -46,5 +50,14 @@ public class Echo extends Thread
                 socket.close();
             } catch(IOException ignored) { }
         }
+    }
+
+    private void threadSleep(int timeToSleep)
+    {
+        try
+        {
+            Thread.sleep(timeToSleep);
+
+        } catch(InterruptedException ignored) { }
     }
 }
